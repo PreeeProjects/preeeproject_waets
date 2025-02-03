@@ -84,7 +84,8 @@ class AlumniAssociationController extends BaseController
         ];
         $notification->insert($dashboardData);
 
-
+        // Notify User
+        $this->NotifyAllAlumni(8);
         return redirect()->to("/AlumniAssociationController/Dashboard");
     }
 
@@ -668,6 +669,7 @@ class AlumniAssociationController extends BaseController
     public function ForumUpload($forum_id)
     {
         $name = session()->get('name');
+        $userType = session()->get('user_type');
 
         $forumModel = new ForumModel();
         $forum_info = $forumModel->where('forum_id', $forum_id)->first();
@@ -692,6 +694,8 @@ class AlumniAssociationController extends BaseController
                 'post_type' => $post_type,
                 'caption' => $captions,
                 'posted_by' => $name,
+                'user_type' => $userType,
+                'major_id' => $forum_info['major_id'],
             ]);
 
             session()->setFlashdata('post_added', "Uploaded a new Post");
@@ -703,6 +707,9 @@ class AlumniAssociationController extends BaseController
                 'content' => 'New Caption Added: ' . $captions,
             ];
             $notification->insert($forumData);
+
+            // NOTIFY ALUMNI
+            $this->ForumPostNotification($forum_info['major_id'], 9);
 
             return redirect()->to("/AlumniAssociationController/ForumVisit/$forum_id");
         } else if ($post_type == '2') {
@@ -734,6 +741,9 @@ class AlumniAssociationController extends BaseController
                 'content' => 'A new image has been posted. Check this out!',
             ];
             $notification->insert($forumData);
+
+            // NOTIFY ALUMNI
+            $this->ForumPostNotification($forum_info['major_id'], 9);
 
             return redirect()->to("/AlumniAssociationController/ForumVisit/$forum_id");
         } else if ($post_type == '3') {
@@ -768,6 +778,9 @@ class AlumniAssociationController extends BaseController
                 'content' => 'A new post with an image and caption has been uploaded: ' . $captions,
             ];
             $notification->insert($forumData);
+
+            // NOTIFY ALUMNI
+            $this->ForumPostNotification($forum_info['major_id'], 9);
 
             return redirect()->to("/AlumniAssociationController/ForumVisit/$forum_id");
         } else {
@@ -1610,7 +1623,21 @@ class AlumniAssociationController extends BaseController
         if (!empty($alumnis)) {
             foreach ($alumnis as $alumni) {
                 $email = $alumni['email'];
-                $tracerstudy = $alumni['year_graduated'];
+                if (!empty($email)) {
+                    $this->SendEmail($email, $messagetype);
+                }
+            }
+        }
+    }
+
+    public function ForumPostNotification($majorID, $messagetype)
+    {
+        $userModel = new UserModel();
+        $alumnis = $userModel->where('user_type', '0')->where('is_approve', 'true')->where('major_id', $majorID)->findAll();
+
+        if (!empty($alumnis)) {
+            foreach ($alumnis as $alumni) {
+                $email = $alumni['email'];
                 if (!empty($email)) {
                     $this->SendEmail($email, $messagetype);
                 }
@@ -1699,6 +1726,18 @@ class AlumniAssociationController extends BaseController
                 'title' => 'Request Forum Denied!',
                 'subject' => 'Notification Forum Status',
                 'message' => 'Your forum request has been declined by the administrator. Please feel free to reach out if you have any questions or need assistance. We appreciate your interest!',
+            ];
+        } elseif ($messagetype == 8) {
+            return [
+                'title' => 'Dashboard Update',
+                'subject' => 'Notification Dashboard Update',
+                'message' => 'The admin has posted an update on the dashboard! Check it out to stay informed, get the latest updates, and stay connected. Do not miss out!',
+            ];
+        } elseif ($messagetype == 9) {
+            return [
+                'title' => 'New Forum Post',
+                'subject' => 'Notification Forum Post',
+                'message' => 'A new post is up on the forum page! Check it out, join the discussion, and share your thoughts. Stay engaged and be part of the conversation!',
             ];
         }
     }

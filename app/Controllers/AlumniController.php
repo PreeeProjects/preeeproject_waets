@@ -482,6 +482,9 @@ class AlumniController extends BaseController
             ];
             $notification->insert($forumData);
 
+            // NOTIFY ALUMNI
+            $this->ForumPostNotification($forum_info['major_id'], 1);
+
             return redirect()->to("/AlumniController/ForumVisit/$forum_id");
         } else if ($post_type == '2') {
             $image = $this->request->getFile('image_only_upload');
@@ -514,6 +517,8 @@ class AlumniController extends BaseController
             ];
             $notification->insert($forumData);
 
+            // NOTIFY ALUMNI
+            $this->ForumPostNotification($forum_info['major_id'], 1);
             return redirect()->to("/AlumniController/ForumVisit/$forum_id");
         } else if ($post_type == '3') {
             $image = $this->request->getFile('image_upload');
@@ -547,6 +552,8 @@ class AlumniController extends BaseController
             ];
             $notification->insert($forumData);
 
+            // NOTIFY ALUMNI
+            $this->ForumPostNotification($forum_info['major_id'], 1);
             return redirect()->to("/AlumniController/ForumVisit/$forum_id");
         } else {
             session()->setFlashdata('error', "Post failed");
@@ -1105,6 +1112,66 @@ class AlumniController extends BaseController
 
         return redirect()->to('/AlumniController/Dashboard');
 
+    }
+
+    public function ForumPostNotification($majorID, $messagetype)
+    {
+        $userModel = new UserModel();
+        $alumnis = $userModel->where('user_type', '0')->where('is_approve', 'true')->where('major_id', $majorID)->findAll();
+
+        if (!empty($alumnis)) {
+            foreach ($alumnis as $alumni) {
+                $email = $alumni['email'];
+                if (!empty($email)) {
+                    $this->SendEmail($email, $messagetype);
+                }
+            }
+        }
+    }
+
+
+    public function SendEmail($email, $messagetype)
+    {
+        // check internet connection
+        helper('network');
+        if (!is_connected()) {
+            session()->setFlashdata('internet_failed', "No Internet Connection!");
+            return redirect()->back();
+        }
+
+        $emailDetails = $this->EmailDetails($messagetype);
+        $title = $emailDetails['title'];
+        $subject = $emailDetails['subject'];
+        $message = $emailDetails['message'];
+
+        $templatePath = APPPATH . '/Views/EmailTemplates/email.html';
+        $emailsubject = $subject;
+        $emailtemplate = file_get_contents($templatePath);
+        $emailtemplate = str_replace('{{title}}', $title, $emailtemplate);
+        $emailtemplate = str_replace('{{message}}', $message, $emailtemplate);
+
+        // send the message to email
+        $emailService = \Config\Services::email();
+        $emailService->setTo($email);
+        $emailService->setSubject($emailsubject);
+        $emailService->setMessage($emailtemplate);
+
+        if ($emailService->send()) {
+            echo "Email Sent";
+        }
+    }
+
+    public function EmailDetails($messagetype)
+    {
+        $emailDetails = [];
+
+        if ($messagetype == 1) {
+            return [
+                'title' => 'New Forum Post',
+                'subject' => 'Notification Forum Post',
+                'message' => 'A new post is up on the forum page! Check it out, join the discussion, and share your thoughts. Stay engaged and be part of the conversation!',
+            ];
+        }
     }
 
 }
