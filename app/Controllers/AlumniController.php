@@ -261,6 +261,7 @@ class AlumniController extends BaseController
 
     public function ForumValidation()
     {
+        $user_id = session()->get('user_logged_id');
         $frm_name = $this->request->getPost('forum_name');
         $major_id = $this->request->getPost('major_id');
         $dscrptn = $this->request->getPost('description');
@@ -274,6 +275,7 @@ class AlumniController extends BaseController
             'forum_name' => $frm_name,
             'description' => $dscrptn,
             'forum_photo' => $img_path,
+            'user_id' => $user_id,
             'created_by' => $rqstr,
             'status' => 'PENDING',
         ];

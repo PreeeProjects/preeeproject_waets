@@ -215,32 +215,9 @@ class AlumniAssociationController extends BaseController
         $emailNotify = $rejectRegisteredAlumni['email'];
 
 
-        // Check internet connection
-        helper('network');
-        if (!is_connected()) {
-            session()->setFlashdata('internet_failed', "No Internet Connection!");
-            return redirect()->back();
-        }
-
-        // Email data
-        $subject = "WAETS Registration Request";
-        $message = "<h3 style='margin-bottom: 0px; color: #000000;'> Hello, " . $rejectRegisteredAlumni['first_name'] . "! </h3> <p style='color: #000000;'> We regret to inform you that your registration has been rejected. For more details, please contact us. </p>";
-
-        // Load email library and initialize configuration
-        $emailService = \Config\Services::email();
-
-        $emailService->setTo($emailNotify);
-        $emailService->setSubject($subject);
-        $emailService->setMessage($message);
-
-        // Send the email and check for success or failure
-        if ($emailService->send()) {
-            session()->setFlashdata('deleted', 'Remove Successfully');
-        } else {
-            // Email sending failed, log the error for debugging
-            $error = $emailService->printDebugger(['headers']);
-            log_message('error', 'Email failed to send: ' . $error);
-            session()->setFlashdata('email_failed', 'Email could not be sent. Please try again later.');
+        // Notify Use
+        if ($emailNotify) {
+            $this->SendEmail($emailNotify, 6);
         }
         $userModel->delete($id);
         return redirect()->back();
@@ -257,32 +234,11 @@ class AlumniAssociationController extends BaseController
         ];
         $userModel->update($approveRegisteredAlumni['user_id'], $data);
 
-        // Check internet connection
-        helper('network');
-        if (!is_connected()) {
-            session()->setFlashdata('internet_failed', "No Internet Connection!");
-            return redirect()->back();
-        }
 
-        // Email data
-        $subject = "WAETS Registration Request";
-        $message = "<h3 style='margin-bottom: 0px; color: #000000;'> Welcome to WAEST, " . $approveRegisteredAlumni['first_name'] . "! </h3> <p style='color: #000000;'> We are pleased to inform you that your registration in WAETS has been approved. Enjoy using WAETS! </p>";
+        // Notify Use
 
-        // Load email library and initialize configuration
-        $emailService = \Config\Services::email();
-
-        $emailService->setTo($emailNotify);
-        $emailService->setSubject($subject);
-        $emailService->setMessage($message);
-
-        // Send the email and check for success or failure
-        if ($emailService->send()) {
-            session()->setFlashdata('success', 'Successfully Added');
-        } else {
-            // Email sending failed, log the error for debugging
-            $error = $emailService->printDebugger(['headers']);
-            log_message('error', 'Email failed to send: ' . $error);
-            session()->setFlashdata('email_failed', 'Email could not be sent. Please try again later.');
+        if ($emailNotify) {
+            $this->SendEmail($emailNotify, 1);
         }
 
         return redirect()->back();
@@ -419,6 +375,8 @@ class AlumniAssociationController extends BaseController
         $notificationModel = new NotificationModel();
         $data['notif'] = $notificationModel->where('audience', '7')->orderBy('date_time', 'desc')->findAll();
 
+        // Notify User
+        $this->NotifyAllAlumni(3);
         return view('/AlumniAssociationPages/assistance-post', $data);
     }
 
@@ -675,6 +633,7 @@ class AlumniAssociationController extends BaseController
 
     public function ForumValidation()
     {
+        $user_id = session()->get('user_id');
         $frm_name = $this->request->getPost('forum_name');
         $major_id = $this->request->getPost('major_id');
         $dscrptn = $this->request->getPost('description');
@@ -687,6 +646,7 @@ class AlumniAssociationController extends BaseController
             'forum_name' => $frm_name,
             'description' => $dscrptn,
             'forum_photo' => $img_path,
+            'user_id' => $user_id,
             'created_by' => 'ADMIN',
             'status' => 'APPROVED',
         ];
@@ -1009,6 +969,10 @@ class AlumniAssociationController extends BaseController
             ];
             $notification->insert($jobofferData);
 
+            // Notify User
+            $this->NotifyAllAlumni(4);
+
+
             return redirect()->to('/AlumniAssociationController/JobOffer');
         } else if ($post_type == '2') {
             $image = $this->request->getFile('image_only_upload');
@@ -1020,7 +984,7 @@ class AlumniAssociationController extends BaseController
 
             $jobModel->insert([
                 'post_type' => $post_type,
-                'image' => $image_path
+                'image' => $image_path,
             ]);
 
             session()->setFlashdata('job_offer_added', "Posted new Job Offer");
@@ -1032,6 +996,9 @@ class AlumniAssociationController extends BaseController
                 'content' => 'Exploring new job opportunities? A new image has been posted. Check this out!',
             ];
             $notification->insert($jobofferData);
+
+            // Notify User
+            $this->NotifyAllAlumni(4);
 
             return redirect()->to('/AlumniAssociationController/JobOffer');
         } else if ($post_type == '3') {
@@ -1046,7 +1013,7 @@ class AlumniAssociationController extends BaseController
             $jobModel->insert([
                 'post_type' => $post_type,
                 'caption' => $captions,
-                'image' => $image_path
+                'image' => $image_path,
             ]);
 
             session()->setFlashdata('job_offer_added', "Posted new Job Offer");
@@ -1058,6 +1025,9 @@ class AlumniAssociationController extends BaseController
                 'content' => 'Exploring new job opportunities? Take a look at this!: ' . $captions,
             ];
             $notification->insert($jobofferData);
+
+            // Notify User
+            $this->NotifyAllAlumni(4);
 
             return redirect()->to('/AlumniAssociationController/JobOffer');
         } else {
@@ -1100,7 +1070,19 @@ class AlumniAssociationController extends BaseController
     public function RemoveRequest($id)
     {
         $model = new ForumModel();
+        $forum = $model->find($id);
         $model->delete($id);
+
+        // Notify User
+        $user_id = $forum['user_id'];
+
+        $userModel = new UserModel();
+        $user = $userModel->find($user_id);
+        $email = $user['email'];
+
+        if ($email) {
+            $this->SendEmail($email, 7);
+        }
 
         session()->setFlashdata('deleted', 'Request has been removed');
 
@@ -1111,14 +1093,8 @@ class AlumniAssociationController extends BaseController
     {
 
         $model = new ForumModel();
-        $_id = $model->where('forum_id', $id)->first;
-
-        $_data = [
-            'status' => 'APPROVED',
-        ];
-        session()->setFlashdata('success', 'Request has been approved successfully');
-
-        $model->update($_id, $_data);
+        $forum = $model->find($id);
+        $model->update($id, ['status' => 'APPROVED']);
 
         $notification = new NotificationModel();
         $forumData = [
@@ -1128,7 +1104,20 @@ class AlumniAssociationController extends BaseController
         ];
         $notification->insert($forumData);
 
-        return redirect()->to("/AlumniAssociationController/ForumRequestMainpage/$_id");
+        // Notify User
+        $user_id = $forum['user_id'];
+
+        $userModel = new UserModel();
+        $user = $userModel->find($user_id);
+        $email = $user['email'];
+
+        if ($email) {
+            $this->SendEmail($email, 2);
+        }
+
+
+        session()->setFlashdata('success', 'Request has been approved successfully');
+        return redirect()->to("/AlumniAssociationController/ForumRequestMainpage/$id");
     }
 
 
@@ -1208,7 +1197,8 @@ class AlumniAssociationController extends BaseController
                 }
             }
 
-
+            // Notify User
+            $this->TracerStudyNotification($_explode[1], 5);
             session()->setFlashdata('post_added', 'Successfully Post Tracer Study');
 
         } else {
@@ -1593,6 +1583,123 @@ class AlumniAssociationController extends BaseController
         } else {
             session()->setFlashdata('unsucessful', 'School Year is already exist');
             return redirect()->back();
+        }
+    }
+
+
+    public function NotifyAllAlumni($messagetype)
+    {
+        $userModel = new UserModel();
+        $alumnis = $userModel->where('user_type', '0')->where('is_approve', 'true')->findAll();
+
+        if (!empty($alumnis)) {
+            foreach ($alumnis as $alumni) {
+                $email = $alumni['email'];
+                if (!empty($email)) {
+                    $this->SendEmail($email, $messagetype);
+                }
+            }
+        }
+    }
+
+    public function TracerStudyNotification($yearGraduated, $messagetype)
+    {
+        $userModel = new UserModel();
+        $alumnis = $userModel->where('user_type', '0')->where('is_approve', 'true')->where('year_graduated', $yearGraduated)->findAll();
+
+        if (!empty($alumnis)) {
+            foreach ($alumnis as $alumni) {
+                $email = $alumni['email'];
+                $tracerstudy = $alumni['year_graduated'];
+                if (!empty($email)) {
+                    $this->SendEmail($email, $messagetype);
+                }
+            }
+        }
+    }
+
+
+    public function SendEmail($email, $messagetype)
+    {
+        // check internet connection
+        helper('network');
+        if (!is_connected()) {
+            session()->setFlashdata('internet_failed', "No Internet Connection!");
+            return redirect()->back();
+        }
+
+        $emailDetails = $this->EmailDetails($messagetype);
+        $title = $emailDetails['title'];
+        $subject = $emailDetails['subject'];
+        $message = $emailDetails['message'];
+
+        $templatePath = APPPATH . '/Views/EmailTemplates/email.html';
+        $emailsubject = $subject;
+        $emailtemplate = file_get_contents($templatePath);
+        $emailtemplate = str_replace('{{title}}', $title, $emailtemplate);
+        $emailtemplate = str_replace('{{message}}', $message, $emailtemplate);
+
+        // send the message to email
+        $emailService = \Config\Services::email();
+        $emailService->setTo($email);
+        $emailService->setSubject($emailsubject);
+        $emailService->setMessage($emailtemplate);
+
+        if ($emailService->send()) {
+            echo "Email Sent";
+        }
+    }
+
+    public function EmailDetails($messagetype)
+    {
+        $emailDetails = [];
+
+        if ($messagetype == 1) {
+            return [
+                'title' => 'Account Approved!',
+                'subject' => 'Notification Account Status',
+                'message' => 'Thank you for registering with WAETS! We are excited to have you on board. Your account has been approved, and you can now log in to access all our features. Welcome to WAETS!',
+            ];
+        } elseif ($messagetype == 2) {
+            return [
+                'title' => 'Request Forum Approved!',
+                'subject' => 'Notification Forum Status',
+                'message' => 'Your forum request has been approved by the administrator! You can check it now and join the discussion. Feel free to share your experience, engage with others, and contribute your thoughts. Happy posting!',
+            ];
+        } elseif ($messagetype == 3) {
+            return [
+                'title' => 'Assistance',
+                'subject' => 'Assistance Notification',
+                'message' => 'Come and join us! The admin has posted an important assistance update. Check it out now and feel free to start new discussions, share your experiences, and connect with others!',
+            ];
+
+        } elseif ($messagetype == 4) {
+            return [
+                'title' => 'Job Offer',
+                'subject' => 'Job Offer Notification',
+                'message' => 'Looking for a job? Come and check it out! The admin has posted a new job opportunity. Do not miss out—explore, apply, and take the next step in your career!',
+            ];
+
+        } elseif ($messagetype == 5) {
+            return [
+                'title' => 'Tracer Study',
+                'subject' => 'Tracer Study Notification',
+                'message' => 'The admin has posted a tracer study, and your participation would be deeply appreciated! We just want to stay connected, learn about your journey, and improve our programs. Check it out and share your insights!',
+            ];
+
+        } elseif ($messagetype == 6) {
+            return [
+                'title' => 'Account Denied',
+                'subject' => 'Notification Account Status',
+                'message' => 'Thank you for registering with WAETS! We are excited to have you on board. Unfortunately, your account has been denied. Please check your email for further details and feel free to contact us if you have any questions. We hope to welcome you again soon!',
+            ];
+
+        } elseif ($messagetype == 7) {
+            return [
+                'title' => 'Request Forum Denied!',
+                'subject' => 'Notification Forum Status',
+                'message' => 'Your forum request has been declined by the administrator. Please feel free to reach out if you have any questions or need assistance. We appreciate your interest!',
+            ];
         }
     }
 
