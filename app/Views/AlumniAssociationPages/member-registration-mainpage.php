@@ -39,59 +39,58 @@
         </nav>
     </div>
 
-    <div class="card mb-4">
+    <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="m-0">Member Registration Page</h2>
-                <div>
+                <h4 class="m-0"><strong>Member Registration Page</strong></h4>
+                <!-- <div>
                     <li class="bx bx-search-alt-2 fs-xlarge text-primary me-3" data-bs-toggle="modal"
                         data-bs-target="#searchBackDropModal"></li>
-                </div>
+                </div> -->
             </div>
         </div>
-    </div>
+        <hr class="m-0">
 
-    <hr>
-
-    <div class="card">
-        <?php if ($alumni): ?>
-            <div class="table-responsive text-nowrap list-group-item-action">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>TUPT-ID</th>
-                            <th>FULL NAME</th>
-                            <th>EMAIL</th>
-                            <th>MAJOR</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <?php foreach ($alumni as $user): ?>
-                            <tr class="list-group-item-action">
-                                <td><?= $user['tupt_id'] ?></td>
-                                <td><?= $user['full_name'] ?></td>
-                                <td><?= $user['email'] ?></td>
-                                <td><?= $user['major'] ?></td>
-                                <td>
-                                    <a href="/AlumniAssociationController/RemoveRegisteredAlumni/<?= $user['user_id'] ?>"
-                                        type="button" class="btn btn-outline-danger btn-sm">Remove</a>
-                                    <a href="/AlumniAssociationController/ApproveRegisteredAlumni/<?= $user['user_id'] ?>"
-                                        type="button" class="btn btn-outline-primary btn-sm">Approve</a>
-                                </td>
+        <div class="card-body">
+            <?php if ($alumni): ?>
+                <div class="">
+                    <table class="" id="members-registration-table">
+                        <thead>
+                            <tr>
+                                <th>TUPT-ID</th>
+                                <th>FULL NAME</th>
+                                <th>EMAIL</th>
+                                <th>MAJOR</th>
+                                <th>Action</th>
                             </tr>
-                            </a>
-                        <?php endforeach; ?>
-            </div>
-            </tbody>
-            </table>
-        <?php else: ?>
-            <div class="text-center fst-italic mt-5 mb-5">
-                <h3 class="mb-0">NO REQUEST</h3>
-                <small>Currently, there are no requests to display.</small>
-            </div>
-        <?php endif; ?>
+                        </thead>
+                        <tbody>
+
+                            <?php foreach ($alumni as $user): ?>
+                                <tr class="list-group-item-action">
+                                    <td><?= $user['tupt_id'] ?></td>
+                                    <td><?= $user['full_name'] ?></td>
+                                    <td><?= $user['email'] ?></td>
+                                    <td><?= $user['major'] ?></td>
+                                    <td>
+                                        <a href="/AlumniAssociationController/RemoveRegisteredAlumni/<?= $user['user_id'] ?>"
+                                            type="button" class="btn btn-outline-danger btn-sm">Remove</a>
+                                        <a href="/AlumniAssociationController/ApproveRegisteredAlumni/<?= $user['user_id'] ?>"
+                                            type="button" class="btn btn-outline-primary btn-sm">Approve</a>
+                                    </td>
+                                </tr>
+                                </a>
+                            <?php endforeach; ?>
+                </div>
+                </tbody>
+                </table>
+            <?php else: ?>
+                <div class="text-center fst-italic mt-5 mb-5">
+                    <h3 class="mb-0">NO REQUEST</h3>
+                    <small>Currently, there are no requests to display.</small>
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 
@@ -199,6 +198,10 @@
     </div>
 </div>
 </div>
+
+<script>
+    new DataTable('#members-registration-table');
+</script>
 
 <script>
     function myFunction() {

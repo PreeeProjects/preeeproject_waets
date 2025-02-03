@@ -16,9 +16,10 @@
     <div class="card mb-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="m-0">Members</h2>
+                <h4 class="m-0"><strong>Members</strong></h4>
                 <a href="#">
-                    <li class="bx bx-search-alt-2 fs-xlarge" data-bs-toggle="modal" data-bs-target="#backDropModal"></li>
+                    <li class="bx bx-search-alt-2 fs-xlarge" data-bs-toggle="modal" data-bs-target="#backDropModal">
+                    </li>
                 </a>
             </div>
         </div>
@@ -34,21 +35,26 @@
             <div class="row">
                 <?php
                 $count = 0;
-                foreach ($members as $member) :
-                    if ($count >= 10) break;
-                ?>
+                foreach ($members as $member):
+                    if ($count >= 10)
+                        break;
+                    ?>
                     <div class="col-1">
-                        <?php if ($member['status'] == 'online') : ?>
+                        <?php if ($member['status'] == 'online'): ?>
                             <div class="avatar avatar-online">
-                                <img src="<?= $member['profile_pic'] ?>" alt="<?= $member['full_name'] ?>" class="rounded-circle" data-bs-toggle="tooltip" data-bs-offset="0,5" data-bs-placement="bottom" data-bs-html="true" title="<small><?= $member['full_name'] ?></small>" />
+                                <img src="<?= $member['profile_pic'] ?>" alt="" class="rounded-circle" data-bs-toggle="tooltip"
+                                    data-bs-offset="0,5" data-bs-placement="bottom" data-bs-html="true"
+                                    title="<small><?= $member['full_name'] ?></small>" />
                             </div>
-                        <?php elseif ($member['status'] == 'offline') : ?>
+                        <?php elseif ($member['status'] == 'offline'): ?>
                             <div class="avatar avatar-offline">
-                                <img src="<?= $member['profile_pic'] ?>" alt="<?= $member['full_name'] ?>" class="rounded-circle" data-bs-toggle="tooltip" data-bs-offset="0,5" data-bs-placement="bottom" data-bs-html="true" title="<small><?= $member['full_name'] ?></small>" />
+                                <img src="<?= $member['profile_pic'] ?>" alt="" class="rounded-circle" data-bs-toggle="tooltip"
+                                    data-bs-offset="0,5" data-bs-placement="bottom" data-bs-html="true"
+                                    title="<small><?= $member['full_name'] ?></small>" />
                             </div>
                         <?php endif; ?>
                     </div>
-                <?php
+                    <?php
                     $count++;
                 endforeach;
                 ?>
@@ -58,14 +64,15 @@
 
     <!-- Members Section -->
     <div class="row">
-        <?php foreach ($members as $member) : ?>
+        <?php foreach ($members as $member): ?>
             <div class="col-lg-6 mb-3" id="<?= $member['full_name'] ?>">
                 <div id="card-effect">
                     <div class="card">
                         <a href="/AlumniController/MemberProfileView/<?= $member['user_id'] ?>">
                             <div class="card-body d-flex text-black">
                                 <!-- Profile picture -->
-                                <img src="<?= $member['profile_pic'] ?>" class="rounded-circle me-4 profile-pic expandable-image" height="75" width="75" />
+                                <img src="<?= $member['profile_pic'] ?>"
+                                    class="rounded-circle me-4 profile-pic expandable-image" height="75" width="75" />
 
                                 <!-- Details -->
                                 <div>
@@ -96,7 +103,8 @@
                     <form class="d-flex">
                         <div class="input-group">
                             <span class="input-group-text"><i class="tf-icons bx bx-search"></i></span>
-                            <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Name Search..">
+                            <input class="form-control" type="text" id="myInput" onkeyup="myFunction()"
+                                placeholder="Name Search..">
                         </div>
                     </form><br>
 
@@ -116,14 +124,18 @@
                                 <th>Status</th>
                             </thead>
                             <tbody>
-                                <?php foreach ($members as $member) : ?>
-                                    <tr onclick="window.location='/AlumniAssociationController/MemberProfileView/<?= $member['user_id'] ?>';" class="member-row">
-                                        <td><img src="<?= $member['profile_pic'] ?>" alt="<?= $member['full_name'] ?>" class="rounded-circle" height="40" width="40" /></td>
+                                <?php foreach ($members as $member): ?>
+                                    <tr onclick="window.location='/AlumniController/MemberProfileView/<?= $member['user_id'] ?>';"
+                                        class="member-row">
+                                        <td><img src="<?= $member['profile_pic'] ?>" alt="" class="rounded-circle"
+                                                height="40" width="40" /></td>
                                         <td class="ps-0 pt-2 pb-0"><?= $member['full_name'] ?></td>
-                                        <?php if ($member['status'] == 'online') : ?>
-                                            <td class="ps-0 pt-2 pb-0 text-center"><span class="badge bg-label-primary me-1">Active</span></td>
-                                        <?php else : ?>
-                                            <td class="ps-0 pt-2 pb-0 text-center"><span class="badge bg-label-secondary me-1">Offline</span></td>
+                                        <?php if ($member['status'] == 'online'): ?>
+                                            <td class="ps-0 pt-2 pb-0 text-center"><span
+                                                    class="badge bg-label-primary me-1">Active</span></td>
+                                        <?php else: ?>
+                                            <td class="ps-0 pt-2 pb-0 text-center"><span
+                                                    class="badge bg-label-secondary me-1">Offline</span></td>
                                         <?php endif; ?>
                                     </tr>
                                 <?php endforeach; ?>

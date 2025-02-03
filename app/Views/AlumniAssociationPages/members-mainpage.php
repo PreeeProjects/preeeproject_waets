@@ -17,7 +17,7 @@
     <div class="card mb-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="m-0">Year Graduated</h2>
+                <h4 class="m-0"><strong>Year Graduated</strong></h4>
                 <a href="#">
                     <li class="bx bx-add-to-queue fs-xlarge text-primary" data-bs-toggle="modal"
                         data-bs-target="#addSchoolYearBackDropModal"></li>
@@ -26,38 +26,28 @@
         </div>
     </div>
 
-    <!-- D I S P L A Y  M E M B E R S  -->
-    <div class="card">
-        <div class="card-body">
-            <div class="table-responsive text-nowrap list-group-item-action">
-                <?php if ($school_years): ?>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Year Graduated</th>
-                                <th class="text-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($school_years as $school_year): ?>
-                                <tr class="list-group-item-action">
-                                    <td><?= $school_year['year_graduated'] ?></td>
-                                    <td> <a
-                                            href="/AlumniAssociationController/SchoolYearMembers/<?= $school_year['year_graduated_id'] ?>"><button
-                                                class="btn btn-sm btn-primary">View Members</button></a></td>
+    <div class="row">
+        <?php foreach ($school_years as $school_year): ?>
+            <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 mb-2">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5>Batch <strong><?= $school_year['year_graduated'] ?></strong></h5>
 
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <div class="text-center fst-italic mt-5 mb-5">
-                        <h3 class="mb-0">NO SCHOOL YEAR UPLOADED</h3>
-                        <small>Unfortunately, no school year to display</small>
+                        <div class="">
+                            <a
+                                href="/AlumniAssociationController/SchoolYearMembers/<?= $school_year['year_graduated_id'] ?>">
+                                <button class="btn btn-sm btn-success">View Members</button>
+                            </a>
+
+                            <a href="/AlumniAssociationController/GeneratePDF/<?= $school_year['year_graduated_id'] ?>"
+                                target="_blank">
+                                <button class="btn btn-sm btn-primary">Print</button>
+                            </a>
+                        </div>
                     </div>
-                <?php endif; ?>
+                </div>
             </div>
-        </div>
+        <?php endforeach; ?>
     </div>
 </div>
 

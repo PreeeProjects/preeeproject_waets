@@ -34,16 +34,17 @@
     <div class="card mb-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="m-0">Forum</h2>
-                <li class="bx bx-add-to-queue fs-xlarge text-danger" data-bs-toggle="modal" data-bs-target="#backDropModal"></li>
+                <h4 class="m-0"><strong>Forum</strong></h4>
+                <li class="bx bx-add-to-queue fs-xlarge text-danger" data-bs-toggle="modal"
+                    data-bs-target="#backDropModal"></li>
             </div>
         </div>
     </div>
 
     <hr>
 
-    <?php if ($info) : ?>
-        <?php foreach ($info as $infos) : ?>
+    <?php if ($info): ?>
+        <?php foreach ($info as $infos): ?>
             <div class="card text-white mb-3" id="card-effect">
                 <a href="/AlumniController/ForumVisit/<?= $infos['forum_id'] ?>">
                     <div class="card-body d-flex justify-content-between align-items-center p-3">
@@ -61,14 +62,14 @@
                 </a>
             </div>
         <?php endforeach; ?>
-    <?php else : ?>
+    <?php else: ?>
         <div class="text-center fst-italic mt-5 mb-5">
             <h3 class="mb-0">NO DATA</h3>
             <small>Unfortunately, it seems there are no posts available</small>
         </div>
     <?php endif; ?>
 
-    
+
     <!-- Modal -->
     <div class="modal fade" id="backDropModal" data-bs-backdrop="static" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -80,21 +81,24 @@
                 <hr class="mb-0">
                 <div class="modal-body mb-10">
 
-                <input type="text" id="nameBackdrop" class="form-control" name="requestor" value="<?= session()->get('name') ?>" hidden/>
+                    <input type="text" id="nameBackdrop" class="form-control" name="requestor"
+                        value="<?= session()->get('name') ?>" hidden />
 
 
                     <div class="row">
                         <div class="col mb-3">
                             <label for="nameBackdrop" class="form-label">Forum Page Name</label>
-                            <input type="text" id="nameBackdrop" class="form-control" name="forum_name" placeholder="Enter Name" />
+                            <input type="text" id="nameBackdrop" class="form-control" name="forum_name"
+                                placeholder="Enter Name" />
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col mb-3">
                             <label for="membersSelect" class="form-label">Members</label>
-                            <select id="membersSelect" class="form-select" name="major_id" aria-label="Default select example">
-                                <?php foreach ($majors as $major) : ?>
+                            <select id="membersSelect" class="form-select" name="major_id"
+                                aria-label="Default select example">
+                                <?php foreach ($majors as $major): ?>
                                     <option value="<?= $major['major_id'] ?>"><?= $major['major_acronym'] ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -113,7 +117,8 @@
                 <div class="modal-footer border-top">
                     <div class="mt-3">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                        <button href="/AlumniController/ForumValidation" type="submit" class="btn btn-primary pe-5 ps-5">Create</button>
+                        <button href="/AlumniController/ForumValidation" type="submit"
+                            class="btn btn-primary pe-5 ps-5">Create</button>
                     </div>
                 </div>
             </form>

@@ -18,23 +18,25 @@
     <div class="card mb-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="m-0">Tracer Study</h2>
-                <a href="#">
-                    <li class="bx bx-add-to-queue fs-xlarge text-primary" data-bs-toggle="modal"
-                        data-bs-target="#backDropModal"></li>
-                </a>
+                <h4 class="m-0"><strong>Tracer Study</strong></h4>
+
+                <div>
+                    <a href="#">
+                        <li class="bx bx-add-to-queue fs-xlarge text-primary" data-bs-toggle="modal"
+                            data-bs-target="#backDropModal"></li>
+                    </a>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <hr>
+        <hr class="m-0">
 
-    <!-- D I S P L A Y  U P L O A D S  -->
-    <div class="card">
+        <!-- D I S P L A Y  U P L O A D S  -->
         <div class="card-body">
-            <div class="table-responsive text-nowrap list-group-item-action">
+            <div class="">
                 <?php if (!empty($header)): ?>
-                    <table class="table table-bordered">
+                    <table class="" id="tracer-study-table">
                         <thead>
                             <tr>
                                 <th>School Year</th>
@@ -45,11 +47,11 @@
                         </thead>
                         <tbody>
                             <?php foreach ($header as $headers): ?>
-                                <tr class="list-group-item-action">
+                                <tr class="">
                                     <td><?= $headers['year_graduated'] ?></td>
                                     <td><?= $headers['caption'] ?></td>
                                     <td><?= $headers['date'] ?></td>
-                                    <td>
+                                    <td class="text-center">
                                         <a href="/AlumniAssociationController/TracerStudyResult/<?= $headers['id'] ?>"><button
                                                 class="btn btn-sm btn-primary">View Result</button></a>
                                         <a onclick="return confirm('Deleting <?= $headers['year_graduated'] ?> Tracer Study will also detele its data. Are you sure you want to proceed?')"
@@ -73,7 +75,9 @@
             </div>
         </div>
     </div>
+
 </div>
+
 
 <!--  A D D  S C H O O L  Y E A R  M O D A L -->
 <div class="modal fade" id="backDropModal" data-bs-backdrop="static" tabindex="-1">
@@ -119,4 +123,8 @@
         </form>
     </div>
 </div>
+
+<script>
+    new DataTable('#tracer-study-table');
+</script>
 <?= $this->endSection(); ?>

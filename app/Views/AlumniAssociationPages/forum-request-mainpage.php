@@ -42,7 +42,7 @@
     <div class="card mb-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="m-0">Forum Request Page</h2>
+                <h4 class="m-0"><strong>Forum Request Page</strong></h4>
             </div>
         </div>
     </div>

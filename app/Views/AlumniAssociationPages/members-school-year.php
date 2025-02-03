@@ -17,60 +17,50 @@
     </div>
 
 
-    <div class="card mb-4">
+    <!-- <div class="card mb-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h2 class="m-0">Members</h2>
                 <div>
-                    <li class="bx bx-search-alt-2 fs-xlarge text-primary me-3" data-bs-toggle="modal"
-                        data-bs-target="#searchBackDropModal"></li>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#searchBackDropModal">
+                        <li class="bx bx-search-alt-2 fs-xlarge text-primary me-3"></li>
+                    </a>
                     <a href="/AlumniAssociationController/GeneratePDF/<?= $year_graduated_id ?>" target="_blank">
                         <li class="bx bx-printer fs-xlarge me-3"></li>
                     </a>
-                    <!-- <li class="bx bx-folder-plus fs-xlarge text-primary" data-bs-toggle="modal"
-                        data-bs-target="#addMemberBackDropModal">
-                    </li> -->
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- A C T I V E  U S E R S -->
     <div class="divider text-start">
         <div class="divider-text">Active Users</div>
     </div>
     <div class="d-flex justify-content-left mb-3">
-        <div class="col-lg-7">
-            <div class="row">
-                <?php
-                $count = 0;
-                foreach ($members as $member):
-                    if ($count >= 10)
-                        break;
-                    ?>
-                    <div class="col-1">
-                        <?php if ($member['status'] == 'online'): ?>
-                            <div class="avatar avatar-online">
-                                <img src="<?= $member['profile_pic'] ?>" alt="<?= $member['full_name'] ?>"
-                                    class="rounded-circle" data-bs-toggle="tooltip" data-bs-offset="0,5"
-                                    data-bs-placement="bottom" data-bs-html="true"
-                                    title="<small><?= $member['full_name'] ?></small>" />
-                            </div>
-                        <?php elseif ($member['status'] == 'offline'): ?>
-                            <div class="avatar avatar-offline">
-                                <img src="<?= $member['profile_pic'] ?>" alt="<?= $member['full_name'] ?>"
-                                    class="rounded-circle" data-bs-toggle="tooltip" data-bs-offset="0,5"
-                                    data-bs-placement="bottom" data-bs-html="true"
-                                    title="<small><?= $member['full_name'] ?></small>" />
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                    <?php
-                    $count++;
-                endforeach;
-                ?>
-            </div>
-        </div>
+        <?php
+        $count = 0;
+        foreach ($members as $member):
+            if ($count >= 10)
+                break;
+            ?>
+
+            <?php if ($member['status'] == 'online'): ?>
+                <div class="me-2 avatar avatar-online">
+                    <img src="<?= $member['profile_pic'] ?>" class="rounded-circle" data-bs-toggle="tooltip"
+                        title="<?= $member['full_name'] ?>" />
+                </div>
+            <?php elseif ($member['status'] == 'offline'): ?>
+                <div class="me-2 avatar avatar-offline">
+                    <img src="<?= $member['profile_pic'] ?>" class="rounded-circle" data-bs-toggle="tooltip"
+                        title="<?= $member['full_name'] ?>" />
+                </div>
+            <?php endif; ?>
+
+            <?php
+            $count++;
+        endforeach;
+        ?>
     </div>
 
     <!-- data-bs-toggle="modal" data-bs-target="#modalCenter" -->
@@ -78,10 +68,25 @@
 
     <!-- D I S P L A Y  M E M B E R S  -->
     <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="m-0"><strong>Member/s List</strong></h4>
+                <div>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#searchBackDropModal">
+                        <li class="bx bx-search-alt-2 fs-xlarge text-primary me-3" data-bs-toggle="tooltip"
+                            title="Search"></li>
+                    </a>
+                    <a href="/AlumniAssociationController/GeneratePDF/<?= $year_graduated_id ?>" target="_blank">
+                        <li class="bx bx-printer fs-xlarge me-3" data-bs-toggle="tooltip" title="Print"></li>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <hr class="m-0">
         <div class="card-body">
             <?php if ($members): ?>
-                <div class="table-responsive text-nowrap list-group-item-action">
-                    <table class="table table-bordered">
+                <div class="">
+                    <table class="" id="members-table">
                         <thead>
                             <tr>
                                 <th>TUPT-ID</th>
@@ -116,10 +121,12 @@
                 <?php endif; ?>
             </div>
         </div>
-
-
     </div>
 </div>
+
+<script>
+    new DataTable('#members-table');
+</script>
 
 <!-- S E A R C H  M O D A L -->
 <div class="modal fade" id="searchBackDropModal" data-bs-backdrop="static" tabindex="-1">
@@ -162,9 +169,8 @@
                             <?php foreach ($members as $member): ?>
                                 <tr onclick="window.location='/AlumniAssociationController/MemberProfileView/<?= $member['user_id'] ?>';"
                                     class="member-row">
-                                    <td class="pe-0"><img src="<?= $member['profile_pic'] ?>"
-                                            alt="<?= $member['full_name'] ?>" class="rounded-circle" height="40"
-                                            width="40" /></td>
+                                    <td class="pe-0"><img src="<?= $member['profile_pic'] ?>" alt="" class="rounded-circle"
+                                            height="40" width="40" /></td>
                                     <td class="ps-0 pe-0 pt-2 pb-0"><?= $member['full_name'] ?></td>
                                     <?php if ($member['status'] == 'online'): ?>
                                         <td class="ps-0 pt-2 pb-0 text-center"><span

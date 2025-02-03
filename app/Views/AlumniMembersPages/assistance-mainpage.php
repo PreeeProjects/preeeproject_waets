@@ -16,7 +16,7 @@
     <div class="card mb-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="m-0">Assistance</h2>
+                <h4 class="m-0"><strong>Assistance</strong></h4>
             </div>
         </div>
     </div>
@@ -24,14 +24,15 @@
     <hr>
 
     <div class="row">
-        <?php if ($info) : ?>
-            <?php foreach ($info as $assistance) : ?>
+        <?php if ($info): ?>
+            <?php foreach ($info as $assistance): ?>
                 <div class="col-sm-6 mb-3">
                     <div class="card" id="card-effect">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h3 class="m-0 fw-bold text-danger"><?= $assistance['title'] ?></h3>
-                                <img src="/assets/logo_folder/logo-transparent.png" class="m-0" style="height: 30px; width: auto;" />
+                                <img src="/assets/logo_folder/logo-transparent.png" class="m-0"
+                                    style="height: 30px; width: auto;" />
                             </div>
                         </div>
                         <hr class="m-0">
@@ -45,7 +46,7 @@
                             </ul>
                             <p class="card-text"> Details: <?= $assistance['details'] ?></p>
                         </div>
-                         <hr class="m-0">
+                        <hr class="m-0">
                         <!-- <div class="footer m-0">
                         <div class="demo-inline-spacing mb-3 ms-3">
                             <button id="joinBtn" type="button" class="btn rounded-pill btn-outline-danger">
@@ -55,16 +56,16 @@
                     </div> -->
 
                     </div>
-                    </div>
                 </div>
-            <?php endforeach; ?>
-        <?php else : ?>
-            <div class="text-center fst-italic mt-5 mb-5">
-                <h3 class="mb-0">NO DATA</h3>
-                <small>Unfortunately, it seems there are no posts available</small>
             </div>
-        <?php endif; ?>
-    </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="text-center fst-italic mt-5 mb-5">
+            <h3 class="mb-0">NO DATA</h3>
+            <small>Unfortunately, it seems there are no posts available</small>
+        </div>
+    <?php endif; ?>
+</div>
 </div>
 
 <!-- 

@@ -14,6 +14,7 @@ use App\Models\CommentModel;
 use App\Models\TracerStudyHeaderModel;
 use App\Models\TracerStudyModel;
 use App\Models\ForumCommentSubModel;
+use App\Models\DashboardModel;
 
 class AlumniController extends BaseController
 {
@@ -22,8 +23,18 @@ class AlumniController extends BaseController
         $_tracer_study_header_id = session()->get('tracer_study_header_id');
         $userId = session()->get('tupt');
 
+        $dashboardModel = new DashboardModel();
+        $dashboard = $dashboardModel->orderBy('date_created', 'desc')->findAll();
+
         $model = new UserModel();
         $_tracer_study = $model->where('tupt_id', $userId)->where('tracer_study_header_id', $_tracer_study_header_id)->where('is_tracer_study', 'true')->first();
+
+        $assistanceModel = new AssistanceModel();
+        $assistance = $assistanceModel->findAll();
+
+        $major_id = session()->get('major_id');
+        $forumModel = new ForumModel();
+        $forum = $forumModel->where('major_id', $major_id)->findAll();
 
         session()->set(['nav_active' => "dashboard"]);
 
@@ -31,12 +42,14 @@ class AlumniController extends BaseController
         $user_id = session()->get('user_id');
 
         $notificationModel = new NotificationModel();
-        $major_id = session()->get('major_id');
         $notif = $notificationModel->where('user_id !=', $user_id)->where('audience', $major_id)->orWhere('audience', 0)->orderBy('date_time', 'desc')->findAll();
 
         $data = [
             'notif' => $notif,
             'tracer_study' => $_tracer_study,
+            'info' => $dashboard,
+            'assistance' => $assistance,
+            'forum' => $forum
         ];
 
         return view('/AlumniMembersPages/dashboard', $data);

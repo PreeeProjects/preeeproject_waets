@@ -1,106 +1,180 @@
 <?= $this->extend('/AlumniMembersComponents/alumni-main-layout') ?>
 <?= $this->section('section') ?>
 
+<style>
+    .carousel-item img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+    }
+</style>
+
+
+
+
 <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="row">
-        <div class="col-lg-9 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title" style="color: #E72929;">Welcome Back 🎉</h3>
-                    <p class="mb-4">
-                        Today is <strong><?= date('F d, Y') ?></strong>. Have a great day a head of you!
-                    </p>
+
+    <div class="mt-10">
+        <h6 class="mb-4">WAETS / Dashboard / </h6>
+    </div>
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-bs-target="#carouselExample" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#carouselExample" data-bs-slide-to="1"></li>
+            <li data-bs-target="#carouselExample" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" src="../assets/img/elements/tup_cover.jpg" alt="First slide" />
+                <div class="carousel-caption d-none d-md-block">
+                    <!-- <p>a premier state university with recognized excellence in engineering and technology education
+                            at par with leading university in the ASEAN region</p> -->
+
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="../assets/img/elements/open_court.jpg" alt="Second slide" />
+                <div class="carousel-caption d-none d-md-block">
+                    <h3>Second slide</h3>
+                    <p>In numquam omittam sea.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="../assets/img/elements/18.jpg" alt="Third slide" />
+                <div class="carousel-caption d-none d-md-block">
+                    <h3>Third slide</h3>
+                    <p>Lorem ipsum dolor sit amet, virtute consequat ea qui, minim graeco mel no.</p>
                 </div>
             </div>
         </div>
+        <a class="carousel-control-prev" href="#carouselExample" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExample" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
+    </div>
 
-        <div class="col-lg-3">
-            <div class="card">
+    <hr class="mt-3">
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-9">
+            <div class="col-md">
+                <?php $count = 0; ?>
+                <?php foreach ($info as $infos): ?>
+                    <div class="mb-4">
+                        <div id="carouselExample<?= $count ?>" class="carousel slide" data-bs-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <?php for ($i = 0; $i < 5; $i++): ?>
+                                    <?php if (!empty($infos['image_' . ($i + 1)])): ?>
+                                        <li data-bs-target="#carouselExample<?= $count ?>" data-bs-slide-to="<?= $i ?>"
+                                            class="<?= $i === 0 ? 'active' : '' ?>"></li>
+                                    <?php endif; ?>
+                                <?php endfor; ?>
+                            </ol>
+
+                            <div class="carousel-inner">
+                                <?php $imageCount = 0; ?>
+                                <?php for ($i = 0; $i < 5; $i++): ?>
+                                    <?php if (!empty($infos['image_' . ($i + 1)])): ?>
+                                        <div class="carousel-item <?= $imageCount === 0 ? 'active' : '' ?>">
+                                            <img class="d-block w-100" src="<?= $infos['image_' . ($i + 1)] ?>" alt="Slide"
+                                                style="object-fit: cover; height: auto;">
+                                        </div>
+                                        <?php $imageCount++; ?>
+                                    <?php endif; ?>
+                                <?php endfor; ?>
+                            </div>
+
+                            <a class="carousel-control-prev" href="#carouselExample<?= $count ?>" role="button"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExample<?= $count ?>" role="button"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </a>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="m-0 text-primary"> <?= $infos['title'] ?> </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <?php $count++; ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <!-- M E N T O R S H I P -->
+        <div class="col-sm-3 fixed-column mb-0">
+            <!-- Tracer Study Card -->
+            <div class="card mb-3">
                 <div class="card-body">
-                    <?php if ($tracer_study): ?>
-                        <div class="text-center">
-                            <h3 class="card-title" style="color: #E72929;">Tracer Study</h3>
+                    <div class="text-center">
+                        <h3 class="card-title text-danger">Tracer Study</h3>
+                        <?php if ($tracer_study): ?>
                             <p class="mb-4">
                                 <a href="/AlumniController/SectionOne/"><i>Answer Now!</i></a>
                             </p>
                         <?php else: ?>
-                            <div class="text-center">
-                                <h3 class="card-title text-danger">Tracer Study</h3>
-                                <p class="mb-4">
-                                    <i>Unavailable</i>
-                                </p>
-                            <?php endif ?>
+                            <p class="mb-4">
+                                <i>Unavailable</i>
+                            </p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assistance Card -->
+            <div class="card mb-3">
+                <div class="card-body m-0">
+                    <div class="text-center">
+                        <div class="mt-2">
+                            <h4 class="fw-bold text-danger m-0">Assistance</h4>
+                            <small>Come and Join with us!</small>
+                            <br><br>
+                            <?php if (!empty($assistance)): ?>
+                                <?php foreach ($assistance as $assistances): ?>
+                                    <a href="/AlumniController/AssistanceMainpage"
+                                        class="list-group-item list-group-item-action p-2"><?= $assistances['title'] ?></a>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>No assistance information available.</p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div>
-
-        <hr class="m-0">
-
-        <div class="row mt-4">
-            <div class="col-lg-3 mb-3">
-                <div class="card" id="card-effect">
-                    <a href="/AlumniController/Members">
-                        <div class="card-body pt-3 pb-3 d-flex text-black">
-                            <span style="font-size: 35px;" class="m-0 me-4">&#x1F468;&#x200D;&#x1F393;</span>
-                            <div>
-                                <h4 class="mb-2" style="color: #E72929;">Members</h4>
-                                <small>Click here!</small>
-                            </div>
+            <!-- Forum Card -->
+            <div class="card">
+                <div class="card-body m-0">
+                    <div class="text-center">
+                        <div class="mt-2">
+                            <h4 class="fw-bold text-danger m-0">Forum</h4>
+                            <small>Come and Join with us!</small>
+                            <br><br>
+                            <?php if (!empty($forum)): ?>
+                                <?php foreach ($forum as $forums): ?>
+                                    <a href="/AlumniController/ForumMainpage"
+                                        class="list-group-item list-group-item-action p-2"><?= $forums['forum_name'] ?></a>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>No forum topics available.</p> <!-- Corrected message -->
+                            <?php endif; ?>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
-
-            <div class="col-lg-3 mb-3">
-                <div class="card" id="card-effect">
-                    <a href="/AlumniController/AssistanceMainpage">
-                        <div class="card-body pt-3 pb-3 d-flex text-black">
-                            <span style="font-size: 35px;" class="m-0 me-4">&#128187;</span>
-
-                            <div>
-                                <h4 class="mb-2" style="color: #E72929;">Assistance</h4>
-                                <small>Click here!</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-
-            <div class="col-lg-3 mb-3">
-                <div class="card" id="card-effect">
-                    <a href="/AlumniController/ForumMainPage">
-                        <div class="card-body pt-3 pb-3 d-flex text-black">
-                            <span style="font-size: 35px;" class="m-0 me-4 ">&#x1F4E2;</span>
-
-                            <div>
-                                <h4 class="mb-2" style="color: #E72929;">Forum</h4>
-                                <small>Click here!</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-lg-3 mb-3">
-                <div class="card" id="card-effect">
-                    <a href="/AlumniController/JobOffer">
-                        <div class="card-body pt-3 pb-3 d-flex text-black">
-                            <span style="font-size: 35px;" class="m-0 me-4">&#128188;</span>
-
-                            <div>
-                                <h4 class="mb-2" style="color: #E72929;">Job Offer</h4>
-                                <small>Click here!</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <hr>
         </div>
     </div>
+</div>
 
-    <?= $this->endSection() ?>
+
+
+<?= $this->endSection() ?>

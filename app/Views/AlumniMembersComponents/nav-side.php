@@ -45,7 +45,7 @@ if ($nav_active == "dashboard") {
 
     <ul class="menu-inner py-1">
         <li class="menu-header small text-uppercase mt-1">
-            <span class="menu-header-text">FEED</span>
+            <span class="menu-header-text">Dashboard</span>
         </li>
 
         <li class="menu-item <?= $dshbrd ?>">
@@ -53,6 +53,10 @@ if ($nav_active == "dashboard") {
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Dashboards">Dashboard</div>
             </a>
+        </li>
+
+        <li class="menu-header small text-uppercase mt-1">
+            <span class="menu-header-text">Manage</span>
         </li>
 
         <li class="menu-item <?= $member ?>">

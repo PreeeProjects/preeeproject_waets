@@ -17,6 +17,7 @@ use App\Models\AdminMasterKeyModel;
 use App\Models\TracerStudyModel;
 use App\Models\TracerStudyHeaderModel;
 use App\Models\ForumCommentSubModel;
+use App\Models\DashboardModel;
 
 class AlumniAssociationController extends BaseController
 {
@@ -26,11 +27,74 @@ class AlumniAssociationController extends BaseController
         session()->set(['nav_active' => "dashboard"]);
         // $data = ['bread_crumb' => 'WAETS / Alumni Association Dashboard'];
 
+        $dashboardModel = new DashboardModel();
+        $data['info'] = $dashboardModel->orderBy('date_created', 'desc')->findAll();
+
+        $assistanceModel = new AssistanceModel();
+        $data['assistance'] = $assistanceModel->findAll();
+
+        $forumModel = new ForumModel();
+        $data['forum'] = $forumModel->findAll();
+
         // D I S P L A Y   N O T I F I C A T I O N
         $notificationModel = new NotificationModel();
-        $notif['notif'] = $notificationModel->where('audience', '7')->orderBy('date_time', 'desc')->findAll();
+        $data['notif'] = $notificationModel->where('audience', '7')->orderBy('date_time', 'desc')->findAll();
 
-        return view('/AlumniAssociationPages/dashboard', $notif);
+        return view('/AlumniAssociationPages/dashboard', $data);
+    }
+
+    public function DashboardUploadPage()
+    {
+        return view('/AlumniAssociationPages/dashboard-post');
+    }
+
+    public function DashboardUpload()
+    {
+        $model = new DashboardModel();
+        $title = $this->request->getPost('title');
+
+        $img_path = "/assets/dashboard/$title";
+        $directoryPath = FCPATH . $img_path;
+
+        if (!is_dir($directoryPath)) {
+            mkdir($directoryPath, 0777, true);
+        }
+
+        $uploadData = [
+            'title' => $title,
+        ];
+
+        for ($i = 1; $i <= 5; $i++) {
+            $file = $this->request->getFile('image' . $i);
+            if ($file->isValid() && !$file->hasMoved()) {
+                $newName = $file->getRandomName();
+                $file->move($directoryPath, $newName);
+                $uploadData['image_' . $i] = $img_path . '/' . $newName;
+            }
+        }
+
+        $model->insert($uploadData);
+        session()->setFlashdata('folder_added', 'Successfully Posted');
+
+        $notification = new NotificationModel();
+        $dashboardData = [
+            'context' => 'Dashboard',
+            'audience' => '0',
+            'content' => " Admin shared a post: " . $title,
+        ];
+        $notification->insert($dashboardData);
+
+
+        return redirect()->to("/AlumniAssociationController/Dashboard");
+    }
+
+    public function DeleteDashboard($id)
+    {
+        $model = new DashboardModel();
+        $model->delete($id);
+        session()->setFlashdata('folder_deleted', 'Post have been Deleted');
+
+        return redirect()->to("/AlumniAssociationController/Dashboard");
     }
 
     // P R O F I L E  C O N T R O L L E R 
@@ -1077,7 +1141,7 @@ class AlumniAssociationController extends BaseController
     public function GeneratePDF($year_graduated_id)
     {
         $userModel = new UserModel();
-        $members = $userModel->where('year_graduated_id', $year_graduated_id)->findAll();
+        $members = $userModel->where('year_graduated_id', $year_graduated_id)->where('is_approve', 'true')->findAll();
 
         $data['members'] = $members;
 

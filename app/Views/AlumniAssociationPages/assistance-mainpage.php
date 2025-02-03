@@ -17,7 +17,7 @@
     <div class="card mb-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="m-0">Assistance</h2>
+                <h4 class="m-0"><strong>Assistance</strong></h4>
                 <a href="/AlumniAssociationController/AssistancePost">
                     <li class="bx bx-folder-plus fs-xlarge"></li>
                 </a>
@@ -28,14 +28,15 @@
     <hr>
 
     <div class="row">
-        <?php if ($info) : ?>
-            <?php foreach ($info as $assistance) : ?>
+        <?php if ($info): ?>
+            <?php foreach ($info as $assistance): ?>
                 <div class="col-sm-6 mb-3">
                     <div class="card" id="card-effect">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h3 class="m-0 fw-bold text-primary"><?= $assistance['title'] ?></h3>
-                                <img src="/assets/logo_folder/logo-transparent.png" class="m-0" style="height: 30px; width: auto;" />
+                                <img src="/assets/logo_folder/logo-transparent.png" class="m-0"
+                                    style="height: 30px; width: auto;" />
                             </div>
                         </div>
                         <hr class="m-0">
@@ -50,13 +51,15 @@
                             <p class="card-text"> Details: <?= $assistance['details'] ?></p>
                         </div>
                         <div class="card-footer border-top">
-                            <a href="/AlumniAssociationController/AssistanceEditPage/<?= $assistance['assistance_id'] ?>" class="btn btn-sm btn-primary pe-4 ps-4">Update</a>
-                            <a href="/AlumniAssociationController/DeleteAssistance/<?= $assistance['assistance_id'] ?>" class="btn btn-sm btn-danger">Delete</a>
+                            <a href="/AlumniAssociationController/AssistanceEditPage/<?= $assistance['assistance_id'] ?>"
+                                class="btn btn-sm btn-primary pe-4 ps-4">Update</a>
+                            <a href="/AlumniAssociationController/DeleteAssistance/<?= $assistance['assistance_id'] ?>"
+                                class="btn btn-sm btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
-        <?php else : ?>
+        <?php else: ?>
             <div class="text-center fst-italic mt-5 mb-5">
                 <h3 class="mb-0">NO DATA</h3>
                 <small>Unfortunately, it seems there are no posts available</small>

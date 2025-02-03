@@ -34,7 +34,7 @@
     <div class="card mb-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="m-0">Forum</h2>
+                <h4 class="m-0"><strong>Forum</strong></h4>
                 <li class="bx bx-add-to-queue fs-xlarge text-primary" data-bs-toggle="modal"
                     data-bs-target="#backDropModal"></li>
             </div>
