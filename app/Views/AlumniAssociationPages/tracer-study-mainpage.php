@@ -34,9 +34,9 @@
 
         <!-- D I S P L A Y  U P L O A D S  -->
         <div class="card-body">
-            <div class="">
+            <div>
                 <?php if (!empty($header)): ?>
-                    <table class="" id="tracer-study-table">
+                    <table id="tracer-study-table">
                         <thead>
                             <tr>
                                 <th>School Year</th>
@@ -47,7 +47,7 @@
                         </thead>
                         <tbody>
                             <?php foreach ($header as $headers): ?>
-                                <tr class="">
+                                <tr class="list-group-item-action">
                                     <td><?= $headers['year_graduated'] ?></td>
                                     <td><?= $headers['caption'] ?></td>
                                     <td><?= $headers['date'] ?></td>

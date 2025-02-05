@@ -14,7 +14,7 @@
         <h6 class="mb-4">WAETS / Dashboard / </h6>
     </div>
 
-    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div id="carouselExample" class="carousel slide" data-bs-interval="3000" data-bs-ride="carousel">
         <ol class="carousel-indicators">
             <li data-bs-target="#carouselExample" data-bs-slide-to="0" class="active"></li>
             <li data-bs-target="#carouselExample" data-bs-slide-to="1"></li>
@@ -59,14 +59,55 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h3 class="card-title text-primary ms-3">Welcome Back 🎉</h3>
-                                <p class="mb-4 ms-3">
+                                <p class="ms-3">
                                     Today is <strong><?= date('F d, Y') ?></strong>. Have a great day ahead of you!
                                 </p>
                             </div>
-                            <a href="/AlumniAssociationController/DashboardUploadPage">
+                            <!-- <a href="/AlumniAssociationController/DashboardUploadPage">
                                 <i class="bx bx-add-to-queue fs-xlarge text-primary me-3" data-bs-toggle="modal"
                                     data-bs-target="#addSchoolYearBackDropModal"></i>
-                            </a>
+                            </a> -->
+                            <div class="p-2">
+                                <a href="/AlumniAssociationController/DashboardUploadPage"
+                                    class="btn btn-outline-primary rounded-pill d-inline-flex align-items-center">
+                                    <i class="bx bx-add-to-queue fs-large text-primary me-2 p-0"></i>
+                                    Add Post </a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row text-center">
+                            <div class="col-sm-8">
+                                <h5 class="mb-2"><strong>Mission</strong></h5>
+                                <hr>
+                                <p style="text-align: justify;" class=" ms-3 text-black"><b>The mission of TUP is stated
+                                        in Section 2 of P.D. No.1518 as follows:</b> The University
+                                    shall provide higher and advanced vocational, technical, industrial, technological
+                                    and professional education and training in industries and technology, and in
+                                    practical arts leading to certificates, diplomas and degrees. It shall provide
+                                    progressive leadership in applied research, developmental studies in technical,
+                                    industrial, and technological fields and production using indigenous materials;
+                                    effect technology transfer in the countryside; and assist in the development of
+                                    small-and-medium scale industries in identified growth centers.</p>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <h5 class="m-0"><strong>Vision</strong></h5>
+                                <hr>
+                                <p style="text-align: justify;">
+                                    <b>TUP: </b> A premier state university with recognized excellence in engineering
+                                    and technology education at par with leading universities in the ASEAN region.
+                                </p>
+                            </div>
+                            <!-- <div class="col-sm-4">
+                                <h5 class="m-0"><strong>Quality Policy</strong></h5>
+                                <hr>
+                                <p style="text-align: justify;">Technological University of the Philippines shall commit
+                                    to provide quality higher
+                                    and advanced education; conduct relevant research and extension projects;
+                                    continually improve its value to customers through enhancement of personnel
+                                    competence and effective quality management system compliant to statutory and
+                                    regulatory requirements.</p>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -80,60 +121,77 @@
     <div class="row d-flex justify-content-center">
         <div class="col-9">
             <div class="col-md">
-                <?php $count = 0; ?>
-                <?php foreach ($info as $infos): ?>
-                    <div class="mb-4">
-                        <div id="carouselExample<?= $count ?>" class="carousel slide" data-bs-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <?php for ($i = 0; $i < 5; $i++): ?>
-                                    <?php if (!empty($infos['image_' . ($i + 1)])): ?>
-                                        <li data-bs-target="#carouselExample<?= $count ?>" data-bs-slide-to="<?= $i ?>"
-                                            class="<?= $i === 0 ? 'active' : '' ?>"></li>
-                                    <?php endif; ?>
-                                <?php endfor; ?>
-                            </ol>
+                <?php if (!empty($info)): ?>
+                    <?php $count = 0; ?>
+                    <?php foreach ($info as $infos): ?>
+                        <div class="mb-4">
+                            <div id="carouselExample<?= $count ?>" class="carousel slide" data-bs-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <?php for ($i = 0; $i < 5; $i++): ?>
+                                        <?php if (!empty($infos['image_' . ($i + 1)])): ?>
+                                            <li data-bs-target="#carouselExample<?= $count ?>" data-bs-slide-to="<?= $i ?>"
+                                                class="<?= $i === 0 ? 'active' : '' ?>"></li>
+                                        <?php endif; ?>
+                                    <?php endfor; ?>
+                                </ol>
 
-                            <div class="carousel-inner">
-                                <?php $imageCount = 0; ?>
-                                <?php for ($i = 0; $i < 5; $i++): ?>
-                                    <?php if (!empty($infos['image_' . ($i + 1)])): ?>
-                                        <div class="carousel-item <?= $imageCount === 0 ? 'active' : '' ?>">
-                                            <img class="d-block w-100" src="<?= $infos['image_' . ($i + 1)] ?>" alt="Slide"
-                                                style="object-fit: cover; height: auto;">
-                                        </div>
-                                        <?php $imageCount++; ?>
-                                    <?php endif; ?>
-                                <?php endfor; ?>
-                            </div>
+                                <div class="carousel-inner">
+                                    <?php $imageCount = 0; ?>
+                                    <?php for ($i = 0; $i < 5; $i++): ?>
+                                        <?php if (!empty($infos['image_' . ($i + 1)])): ?>
+                                            <div class="carousel-item <?= $imageCount === 0 ? 'active' : '' ?>">
+                                                <img class="d-block w-100" src="<?= $infos['image_' . ($i + 1)] ?>" alt="Slide"
+                                                    style="object-fit: cover; height: auto;">
+                                            </div>
+                                            <?php $imageCount++; ?>
+                                        <?php endif; ?>
+                                    <?php endfor; ?>
+                                </div>
 
-                            <a class="carousel-control-prev" href="#carouselExample<?= $count ?>" role="button"
-                                data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#carouselExample<?= $count ?>" role="button"
-                                data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </a>
-                        </div>
-                        <div class="card">
-                            <div class="d-flex justify-content-between align-items-center">
-
-                                <h4 class="my-4 ms-3 text-primary"> <?= $infos['title'] ?> </h4>
-                                <!-- Delete -->
-                                <a onclick="return confirm('Are you sure you want to delete <?= $infos['title'] ?> post?')"
-                                    href="/AlumniAssociationController/DeleteDashboard/<?= $infos['dashboard_id'] ?>">
-                                    <i class="bx bx-trash text-secondary fs-medium me-3 text-primary"
-                                        data-bs-toggle="tooltip" data-bs-offset="0,5" data-bs-placement="bottom"
-                                        data-bs-html="true" title="Delete"></i>
+                                <a class="carousel-control-prev" href="#carouselExample<?= $count ?>" role="button"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExample<?= $count ?>" role="button"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
                                 </a>
                             </div>
+                            <div class="card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h4 class="my-4 ms-3 text-primary"> <?= htmlspecialchars($infos['title']) ?> </h4>
+                                    <!-- Delete -->
+                                    <a onclick="return confirm('Are you sure you want to delete <?= htmlspecialchars($infos['title']) ?> post?')"
+                                        href="/AlumniAssociationController/DeleteDashboard/<?= $infos['dashboard_id'] ?>">
+                                        <i class="bx bx-trash text-secondary fs-medium me-3 text-primary"
+                                            data-bs-toggle="tooltip" data-bs-offset="0,5" data-bs-placement="bottom"
+                                            data-bs-html="true" title="Delete"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
+                        <?php $count++; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text-center fst-italic m-3">
+                                <h3 class="mb-0">NO DATA</h3>
+                                <small>Unfortunately, it seems there are no posts available</small> <br>
+                                <div class="p-2">
+                                    <a href="/AlumniAssociationController/DashboardUploadPage"
+                                        class="btn btn-outline-primary rounded-pill mt-3 d-inline-flex align-items-center">
+                                        <i class="bx bx-add-to-queue fs-large text-primary me-2 p-0"></i>
+                                        Add Post </a>
+                                </div>
 
+                            </div>
+
+                        </div>
                     </div>
-                    <?php $count++; ?>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
 

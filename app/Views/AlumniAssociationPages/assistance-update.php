@@ -24,12 +24,13 @@
 
         <form action="/AlumniAssociationController/AssistanceEditPost" method="post">
             <div class="card-body">
-                <input type="hidden" name="assistance_id" value="<?= $assistance_id  ?>">
+                <input type="hidden" name="assistance_id" value="<?= $assistance_id ?>">
 
                 <div class="row">
                     <div class="mb-3">
                         <label class="form-label">Theme</label>
-                        <input class="form-control" type="text" id="theme" name="theme" value="<?= $title ?>" autofocus />
+                        <input class="form-control" type="text" id="theme" name="theme" value="<?= $title ?>"
+                            autofocus />
                     </div>
                 </div>
 
@@ -42,17 +43,20 @@
                         <label class="form-label">When</label>
                         <input class="form-control" type="date" name="when" id="when" value="<?= $when ?>" />
                     </div>
+
                 </div>
 
                 <div class="row">
                     <div class="mb-3 col-md-6">
                         <label class="form-label">Where</label>
-                        <input class="form-control" type="text" id="where" name="where" value="<?= $where ?>" autofocus />
+                        <input class="form-control" type="text" id="where" name="where" value="<?= $where ?>"
+                            autofocus />
                     </div>
 
                     <div class="mb-3 col-md-6">
                         <label class="form-label">Qualifiation</label>
-                        <input class="form-control" type="text" name="qualification" id="qualification" value="<?= $qualification ?>" />
+                        <input class="form-control" type="text" name="qualification" id="qualification"
+                            value="<?= $qualification ?>" />
                     </div>
                 </div>
 

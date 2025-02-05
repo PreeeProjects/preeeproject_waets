@@ -150,9 +150,9 @@
         });
 
         function replaceButtonWithImage(input, imageUrl, index) {
-            imageLabels[index].style.display = 'none'; // Hide the current label (plus sign button)
-            const imageContainer = imageLabels[index].parentNode; // Get the parent container
-            imageContainer.style.display = 'block'; // Show the container
+            imageLabels[index].style.display = 'none';
+            const imageContainer = imageLabels[index].parentNode;
+            imageContainer.style.display = 'block';
 
             const img = document.createElement('img');
             img.src = imageUrl;

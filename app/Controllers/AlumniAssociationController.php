@@ -18,6 +18,7 @@ use App\Models\TracerStudyModel;
 use App\Models\TracerStudyHeaderModel;
 use App\Models\ForumCommentSubModel;
 use App\Models\DashboardModel;
+use Carbon\Carbon;
 
 class AlumniAssociationController extends BaseController
 {
@@ -31,7 +32,7 @@ class AlumniAssociationController extends BaseController
         $data['info'] = $dashboardModel->orderBy('date_created', 'desc')->findAll();
 
         $assistanceModel = new AssistanceModel();
-        $data['assistance'] = $assistanceModel->findAll();
+        $data['assistance'] = $assistanceModel->where('is_expired', '0')->findAll();
 
         $forumModel = new ForumModel();
         $data['forum'] = $forumModel->findAll();
@@ -204,9 +205,14 @@ class AlumniAssociationController extends BaseController
         session()->set(['nav_active' => "member_request"]);
 
         $userModel = new UserModel();
-        $registereAlumni['alumni'] = $userModel->where('is_approve', 'false')->findAll();
+        $data['alumni'] = $userModel->where('is_approve', 'false')->findAll();
 
-        return view('/AlumniAssociationPages/member-registration-mainpage', $registereAlumni);
+        // D I S P L A Y   N O T I F I C A T I O N
+        $notificationModel = new NotificationModel();
+        $data['notif'] = $notificationModel->where('audience', '7')->orderBy('date_time', 'desc')->findAll();
+
+
+        return view('/AlumniAssociationPages/member-registration-mainpage', $data);
     }
 
     public function RemoveRegisteredAlumni($id)
@@ -295,6 +301,11 @@ class AlumniAssociationController extends BaseController
         $model = new SchoolYearModel();
         $data['school_years'] = $model->findAll();
 
+        // D I S P L A Y   N O T I F I C A T I O N
+        $notificationModel = new NotificationModel();
+        $data['notif'] = $notificationModel->where('audience', '7')->orderBy('date_time', 'desc')->findAll();
+
+
         return view('/AlumniAssociationPages/members-mainpage', $data);
     }
 
@@ -360,11 +371,13 @@ class AlumniAssociationController extends BaseController
     {
         session()->set(['nav_active' => "assistance"]);
         $userModel = new AssistanceModel();
-        $data['info'] = $userModel->orderBy('assistance_id', 'desc')->findAll();
+        $data['info'] = $userModel->where('is_expired', '0')->orderBy('assistance_id', 'desc')->findAll();
 
         // D I S P L A Y   N O T I F I C A T I O N
         $notificationModel = new NotificationModel();
         $data['notif'] = $notificationModel->where('audience', '7')->orderBy('date_time', 'desc')->findAll();
+
+        $this->AssistanceAutomaticDelete();
 
         return view('/AlumniAssociationPages/assistance-mainpage', $data);
     }
@@ -376,8 +389,6 @@ class AlumniAssociationController extends BaseController
         $notificationModel = new NotificationModel();
         $data['notif'] = $notificationModel->where('audience', '7')->orderBy('date_time', 'desc')->findAll();
 
-        // Notify User
-        $this->NotifyAllAlumni(3);
         return view('/AlumniAssociationPages/assistance-post', $data);
     }
 
@@ -390,6 +401,8 @@ class AlumniAssociationController extends BaseController
         $What = $this->request->getPost('what');
         $Where = $this->request->getPost('where');
         $When = $this->request->getPost('when');
+        $time_from = $this->request->getPost('time_from');
+        $time_to = $this->request->getPost('time_to');
         $quali = $this->request->getPost('qualification');
         $details = $this->request->getPost('details');
 
@@ -399,6 +412,8 @@ class AlumniAssociationController extends BaseController
             'what' => $What,
             'where' => $Where,
             'when' => $When,
+            'time_from' => $time_from,
+            'time_to' => $time_to,
             'qualification' => $quali,
             'details' => $details,
         ];
@@ -413,6 +428,8 @@ class AlumniAssociationController extends BaseController
         ];
         $notification->insert($assistanceData);
 
+        // Notify User
+        // $this->NotifyAllAlumni(3);
         return redirect()->to('AlumniAssociationController/AssistanceMainpage');
     }
 
@@ -424,6 +441,23 @@ class AlumniAssociationController extends BaseController
 
         return redirect()->to("/AlumniAssociationController/AssistanceMainpage");
     }
+
+
+    public function AssistanceAutomaticDelete()
+    {
+        $assistanceModel = new AssistanceModel();
+
+        // $currentDate = date('Y-m-d');
+
+        $data = [
+            'is_expired' => 1,
+        ];
+        $assistanceModel->where('when < CURDATE()')->set($data)->update();
+
+
+    }
+
+
 
     public function AssistanceEditPage($mntrshp_id)
     {
@@ -938,7 +972,7 @@ class AlumniAssociationController extends BaseController
         $data['members'] = $userModel->findAll();
 
         $assistanceModel = new AssistanceModel();
-        $data['assistance'] = $assistanceModel->orderBy('assistance_id', 'desc')->findAll();
+        $data['assistance'] = $assistanceModel->where('is_expired', '0')->orderBy('assistance_id', 'desc')->findAll();
 
         $jobOfferModel = new JobOfferModel();
         $data['job_offers'] = $jobOfferModel->orderBy('date', 'desc')->findAll();
@@ -1172,6 +1206,11 @@ class AlumniAssociationController extends BaseController
             'year_graduated' => $year_graduated,
             'header' => $headers,
         ];
+
+        // D I S P L A Y   N O T I F I C A T I O N
+        $notificationModel = new NotificationModel();
+        $data['notif'] = $notificationModel->where('audience', '7')->orderBy('date_time', 'desc')->findAll();
+
 
         return view('/AlumniAssociationPages/tracer-study-mainpage', $data);
     }
@@ -1547,6 +1586,10 @@ class AlumniAssociationController extends BaseController
             'countCRTwentyK' => $twentyKCRCount,
             'countCRTwentyKAbove' => $twentyKAboveCRCount,
         ];
+
+        // D I S P L A Y   N O T I F I C A T I O N
+        $notificationModel = new NotificationModel();
+        $data['notif'] = $notificationModel->where('audience', '7')->orderBy('date_time', 'desc')->findAll();
 
         return view('/AlumniAssociationPages/tracer-study-result-page', $data);
     }

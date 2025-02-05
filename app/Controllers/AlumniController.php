@@ -30,7 +30,7 @@ class AlumniController extends BaseController
         $_tracer_study = $model->where('tupt_id', $userId)->where('tracer_study_header_id', $_tracer_study_header_id)->where('is_tracer_study', 'true')->first();
 
         $assistanceModel = new AssistanceModel();
-        $assistance = $assistanceModel->findAll();
+        $assistance = $assistanceModel->where('is_expired', '0')->findAll();
 
         $major_id = session()->get('major_id');
         $forumModel = new ForumModel();
@@ -220,7 +220,7 @@ class AlumniController extends BaseController
     {
         session()->set(['nav_active' => "assistance"]);
         $userModel = new AssistanceModel();
-        $data['info'] = $userModel->orderBy('assistance_id', 'desc')->findAll();
+        $data['info'] = $userModel->where('is_expired', '0')->orderBy('assistance_id', 'desc')->findAll();
 
         // D I S P L A Y   N O T I F I C A T I O N
         $user_id = session()->get('user_id');
@@ -691,7 +691,7 @@ class AlumniController extends BaseController
         session()->set(['nav_active' => "job_offer"]);
 
         $assistanceModel = new AssistanceModel();
-        $data['assistance'] = $assistanceModel->orderBy('assistance_id', 'desc')->findAll();
+        $data['assistance'] = $assistanceModel->where('is_expired', '0')->orderBy('assistance_id', 'desc')->findAll();
 
         $jobOfferModel = new JobOfferModel();
         $data['job_offers'] = $jobOfferModel->orderBy('date', 'desc')->findAll();
@@ -1173,5 +1173,6 @@ class AlumniController extends BaseController
             ];
         }
     }
+
 
 }

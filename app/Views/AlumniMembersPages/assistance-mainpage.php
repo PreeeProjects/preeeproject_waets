@@ -26,11 +26,20 @@
     <div class="row">
         <?php if ($info): ?>
             <?php foreach ($info as $assistance): ?>
-                <div class="col-sm-6 mb-3">
+                <div class="col-sm-4 mb-3">
                     <div class="card" id="card-effect">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h3 class="m-0 fw-bold text-danger"><?= $assistance['title'] ?></h3>
+                                <h4 class="m-0 fw-bold text-danger"><?= $assistance['title'] ?></h4>
+                                <!-- <div class="">
+                                    <div class="">
+                                        <button type="button" class="btn rounded-pill btn-outline-danger joinBtn">
+                                            <span class="tf-icons bx bx-link-alt"></span>&nbsp;<span
+                                                class="joinText">JOIN</span>
+                                        </button>
+
+                                    </div>
+                                </div> -->
                                 <img src="/assets/logo_folder/logo-transparent.png" class="m-0"
                                     style="height: 30px; width: auto;" />
                             </div>
@@ -47,41 +56,54 @@
                             <p class="card-text"> Details: <?= $assistance['details'] ?></p>
                         </div>
                         <hr class="m-0">
-                        <!-- <div class="footer m-0">
-                        <div class="demo-inline-spacing mb-3 ms-3">
-                            <button id="joinBtn" type="button" class="btn rounded-pill btn-outline-danger">
-                                <span class="tf-icons bx bx-link-alt"></span>&nbsp;<span id="joinText">JOIN</span>
-                            </button>
-                        </div>
-                    </div> -->
+
 
                     </div>
                 </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="text-center fst-italic mt-5 mb-5">
+                <h3 class="mb-0">NO DATA</h3>
+                <small>Unfortunately, it seems there are no posts available</small>
             </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <div class="text-center fst-italic mt-5 mb-5">
-            <h3 class="mb-0">NO DATA</h3>
-            <small>Unfortunately, it seems there are no posts available</small>
-        </div>
-    <?php endif; ?>
-</div>
+        <?php endif; ?>
+    </div>
 </div>
 
-<!-- 
-<script>
-document.getElementById("joinBtn").addEventListener("click", function() {
-  var joinText = document.getElementById("joinText");
-  if (joinText.textContent === "JOIN") {
-    // Change text to "JOINED" and add shading
-    joinText.textContent = "JOINED";
-    this.classList.add("red");
-  } else {
-    // Change text to "JOIN" and remove shading
-    joinText.textContent = "JOIN";
-    this.classList.remove("red");
-  }
-});
+<!-- <script>
+    document.querySelectorAll(".joinBtn").forEach(function (button) {
+        button.addEventListener("click", function () {
+            var joinText = this.querySelector(".joinText");
+
+            if (joinText.textContent === "JOIN") {
+                // Change text to "JOINED" and add shading
+                joinText.textContent = "JOINED";
+                this.classList.add("red");
+
+                // Send AJAX request to AssitanceJoin() function
+                fetch("/AlumniAssociationController/AssitanceJoin", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    body: JSON.stringify({})
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log("Response:", data);
+                    })
+                    .catch(error => console.error("Error:", error));
+
+            } else {
+                // Change text to "JOIN" and remove shading
+                joinText.textContent = "JOIN";
+                this.classList.remove("red");
+            }
+        });
+    });
 </script> -->
+
+
 
 <?= $this->endSection(); ?>

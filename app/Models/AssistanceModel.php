@@ -8,5 +8,5 @@ class AssistanceModel extends Model
 {
     protected $table = 'tbl_assistance';
     protected $primaryKey = 'assistance_id';
-    protected $allowedFields = ['title', 'what', 'when', 'where', 'qualification', 'details'];
+    protected $allowedFields = ['title', 'what', 'when', 'where', 'qualification', 'details', 'is_expired'];
 }

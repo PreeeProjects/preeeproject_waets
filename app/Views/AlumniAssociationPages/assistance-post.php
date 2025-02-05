@@ -42,6 +42,16 @@
                         <label class="form-label">When</label>
                         <input class="form-control" type="date" name="when" id="when" />
                     </div>
+
+                    <!-- <div class="mb-3 col-md-2">
+                        <label class="form-label">Time [From]</label>
+                        <input class="form-control" type="time" id="time_from" name="time_from" autofocus />
+                    </div>
+
+                    <div class="mb-3 col-md-2">
+                        <label class="form-label">Time [To]</label>
+                        <input class="form-control" type="time" id="time_to" name="time_to" autofocus />
+                    </div> -->
                 </div>
 
                 <div class="row">
@@ -49,6 +59,8 @@
                         <label class="form-label">Where</label>
                         <input class="form-control" type="text" id="where" name="where" autofocus />
                     </div>
+
+
 
                     <div class="mb-3 col-md-6">
                         <label class="form-label">Qualifiation</label>
