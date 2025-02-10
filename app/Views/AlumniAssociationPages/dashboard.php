@@ -69,14 +69,14 @@
                             </a> -->
                             <div class="p-2">
                                 <a href="/AlumniAssociationController/DashboardUploadPage"
-                                    class="btn btn-outline-primary rounded-pill d-inline-flex align-items-center">
+                                    class="btn btn-outline-primary rounded-pill d-flex justify-content-between align-items-center">
                                     <i class="bx bx-add-to-queue fs-large text-primary me-2 p-0"></i>
                                     Add Post </a>
                             </div>
                         </div>
-                        <hr>
                         <div class="row text-center">
-                            <div class="col-sm-8">
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-5 col-xxl-8">
+                                <hr>
                                 <h5 class="mb-2"><strong>Mission</strong></h5>
                                 <hr>
                                 <p style="text-align: justify;" class=" ms-3 text-black"><b>The mission of TUP is stated
@@ -90,7 +90,8 @@
                                     small-and-medium scale industries in identified growth centers.</p>
 
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-5 col-xxl-4">
+                                <hr>
                                 <h5 class="m-0"><strong>Vision</strong></h5>
                                 <hr>
                                 <p style="text-align: justify;">
@@ -119,7 +120,7 @@
 
     <!-- Bootstrap carousel -->
     <div class="row d-flex justify-content-center">
-        <div class="col-9">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-5 col-xxl-9">
             <div class="col-md">
                 <?php if (!empty($info)): ?>
                     <?php $count = 0; ?>
@@ -196,10 +197,10 @@
         </div>
 
         <!-- M E N T O R S H I P -->
-        <div class="col-sm-3 fixed-column mb-0">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-5 col-xxl-3 fixed-column mb-0">
 
             <!-- Assistance Card -->
-            <div class="card mb-3">
+            <div class="card mb-3 mt-3">
                 <div class="card-body m-0">
                     <div class="text-center">
                         <div class="mt-2">

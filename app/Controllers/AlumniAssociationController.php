@@ -377,7 +377,7 @@ class AlumniAssociationController extends BaseController
         $notificationModel = new NotificationModel();
         $data['notif'] = $notificationModel->where('audience', '7')->orderBy('date_time', 'desc')->findAll();
 
-        $this->AssistanceAutomaticDelete();
+        // $this->AssistanceAutomaticDelete();
 
         return view('/AlumniAssociationPages/assistance-mainpage', $data);
     }
@@ -443,19 +443,19 @@ class AlumniAssociationController extends BaseController
     }
 
 
-    public function AssistanceAutomaticDelete()
-    {
-        $assistanceModel = new AssistanceModel();
+    // public function AssistanceAutomaticDelete()
+    // {
+    //     $assistanceModel = new AssistanceModel();
 
-        // $currentDate = date('Y-m-d');
+    //     // $currentDate = date('Y-m-d');
 
-        $data = [
-            'is_expired' => 1,
-        ];
-        $assistanceModel->where('when < CURDATE()')->set($data)->update();
+    //     $data = [
+    //         'is_expired' => 1,
+    //     ];
+    //     $assistanceModel->where('when < CURDATE()')->set($data)->update();
 
 
-    }
+    // }
 
 
 
